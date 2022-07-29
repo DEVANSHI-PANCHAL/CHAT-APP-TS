@@ -6,7 +6,6 @@ subscription Subscription {
         id
         text
         receiverId
-        firstName
         senderId
         createdAt
     }

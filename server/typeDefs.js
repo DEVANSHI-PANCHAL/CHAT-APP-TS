@@ -1,8 +1,10 @@
 import {gql} from 'apollo-server-express'
+
+//  user(id:ID!):User 
 const typeDefs = gql`
     type Query{
         users:[User]
-        user(id:ID!):User 
+      
         messagesByUser(receiverId:Int!):[Message]
 
     }
@@ -30,8 +32,8 @@ const typeDefs = gql`
         createdAt: Date!
     }
     type Mutation{
-        SignupUser(userNew:UserInput!):User
-        SigninUser(userSignin:UserSigninInput!):Token
+        signupUser(userNew:UserInput!):User
+        signinUser(userSignin:UserSigninInput!):Token
         createMessage(receiverId:Int!,text:String!):Message
     }
     type User{

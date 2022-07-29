@@ -2,7 +2,6 @@ import React,{useState,useRef} from 'react'
 import {Box,Stack,Typography,Button,TextField,Card,CircularProgress,Alert} from '@mui/material'
 import {useMutation} from '@apollo/client'
 import {SIGNUP_USER,LOGIN_USER} from '../graphql/mutations';
-import { isOptionGroup } from '@mui/base';
 
 interface UserIntf3{
     setloggedIn:any
@@ -12,15 +11,16 @@ const AuthScreen = ({setloggedIn}:UserIntf3) => {
     const [showLogin,setShowLogin] = useState(true)
     const [formData,setFormData] = useState({})
     const authForm = useRef<any>(null)
-    const [SignupUser,{data:signupData,loading:l1,error:e1}] = useMutation(SIGNUP_USER)
+    const [signupUser,{data:signupData,loading:l1,error:e1}] = useMutation(SIGNUP_USER)
     
     const [loginUser,{data:loginData,loading:l2,error:e2}] = useMutation(LOGIN_USER,{
         onCompleted(data){
             console.log(data)
-            localStorage.setItem("jwt",data.SigninUser.token)
+            localStorage.setItem("jwt",data.signinUser.token)
             setloggedIn(true)
         }
     })
+    console.log("LOGIN DATA :: ", loginData);
   
     if(l1 || l2){
         return (
@@ -53,7 +53,7 @@ const AuthScreen = ({setloggedIn}:UserIntf3) => {
                }
            })
         }else{
-            SignupUser({
+            signupUser({
                 variables:{
                     userNew:formData
                 }
@@ -78,7 +78,7 @@ const AuthScreen = ({setloggedIn}:UserIntf3) => {
         spacing={2}
         sx={{width:"400px"}}>
 
-            {signupData && <Alert severity="success">{signupData.SignupUser.firstName} signed up</Alert>}
+            {signupData && <Alert severity="success">{signupData.signupUser.firstName} signed up</Alert>}
             {e1 && <Alert severity="error">{e1.message}</Alert>}
             {e2 && <Alert severity="error">{e2.message}</Alert>}
 

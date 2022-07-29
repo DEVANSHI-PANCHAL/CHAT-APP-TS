@@ -44,7 +44,7 @@ const resolvers = {
     },
     
     Mutation:{
-        SignupUser:async(_,{userNew})=>{
+        signupUser:async(_,{userNew})=>{
      const user =await prisma.user.findUnique({where:{email:userNew.email}})
         if(user) throw new AuthenticationError("user already exixts with this email")  
         const hashedPassword = await bcrypt.hash(userNew.password,10)
@@ -56,7 +56,7 @@ const resolvers = {
             })
             return newUser
         },
-        SigninUser:async (_,{userSignin})=>{
+        signinUser:async (_,{userSignin})=>{
             const user =await prisma.user.findUnique({where:{email:userSignin.email}})
             if(!user) throw new AuthenticationError("User doesnt exist with this email")
            const doMatch = await bcrypt.compare(userSignin.password,user.password)
@@ -74,6 +74,7 @@ const resolvers = {
                 }
             })
             pubsub.publish(MESSAGE_ADDED,{messageAdded:message})
+            console.log("PUB SUB PUBLISH", pubsub)
             return message
         },
         
